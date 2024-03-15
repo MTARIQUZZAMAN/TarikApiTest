@@ -25,9 +25,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+//https://www.youtube.com/watch?v=3eFQkchyF2A
+builder.Services.AddCors(setup =>
+{
+    setup.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder.WithOrigins("https://localhost:7124");
+    });
+});
+
 //data related services
 builder.Services.AddApplication();
-builder.Services.AddInfractructure();
+builder.Services.AddInfractructure(builder.Configuration);
 
 
 //add automapper
@@ -46,6 +55,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
 
 //error handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();

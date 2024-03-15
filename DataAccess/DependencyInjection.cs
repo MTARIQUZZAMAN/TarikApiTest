@@ -9,8 +9,10 @@ namespace DataAccess
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfractructure(this IServiceCollection services)
+        public static IServiceCollection AddInfractructure(this IServiceCollection services, IConfiguration config)
         {
+            var connectionString = config.GetConnectionString("Default");
+
             services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
             services.AddSingleton<IItemRepository, ItemRepository>();
 

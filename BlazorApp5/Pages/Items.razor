@@ -1,6 +1,6 @@
 ﻿@page "/items"
-@using BlazorApp1.ServiceInterfaces
-@using BlazorApp1.DTOs
+@using BlazorApp5.ServiceInterfaces
+@using BlazorApp5.DTOs
 @using Newtonsoft.Json
 
 <PageTitle>Items</PageTitle>
@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in modelVms)
+        @foreach (var item in modelVms)
         {
             <tr>
                 <td> @item.Id</td>
@@ -36,7 +36,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-       
+
         var message = "Could not get response from API";
 
         try
@@ -65,7 +65,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);            
+            Console.WriteLine(ex.Message);
             throw ex;
         }
     }

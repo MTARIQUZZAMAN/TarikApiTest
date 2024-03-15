@@ -1,8 +1,8 @@
-﻿using BlazorApp1.DTOs;
-using BlazorApp1.Helpers;
-using BlazorApp1.ServiceInterfaces;
+﻿using BlazorApp5.DTOs;
+using BlazorApp5.Helpers;
+using BlazorApp5.ServiceInterfaces;
 
-namespace BlazorApp1.Services
+namespace BlazorApp5.Services
 {
     public class ItemService : IItemService
     {

@@ -1,9 +1,9 @@
-﻿using BlazorApp1.Helpers;
-using BlazorApp1.ServiceInterfaces;
+﻿using BlazorApp5.Helpers;
+using BlazorApp5.ServiceInterfaces;
 using System.Net.Http;
 using System.Net.Http.Json;
 
-namespace BlazorApp1.Services
+namespace BlazorApp5.Services
 {
     public class HttpClientService : IHttpClientService
     {
