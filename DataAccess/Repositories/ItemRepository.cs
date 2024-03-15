@@ -68,7 +68,7 @@ namespace DataAccess.Repositories
             var p = new DynamicParameters();
             p.Add("ID", id);
 
-            var rowsAffected = await _db.SaveData("delte STR_ITEM_INFO where STR_ITEM_ID=@ID", p, CommandType.Text);
+            var rowsAffected = await _db.SaveData("delete STR_ITEM_INFO where STR_ITEM_ID=@ID", p, CommandType.Text);
             return rowsAffected;
         }
 
