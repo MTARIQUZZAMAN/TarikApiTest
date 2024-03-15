@@ -1,0 +1,171 @@
+﻿@page "/itemdetails"
+@page "/itemdetails/{id}"
+@using BlazorApp1.ServiceInterfaces
+@using BlazorApp1.DTOs
+@using Newtonsoft.Json
+
+@if(string.IsNullOrEmpty(Id))
+{
+    <h1>Add New Item</h1>
+}
+else
+{
+
+    <h1>Update Item</h1>
+
+}
+
+<div class="row">
+    <EditForm Model="@modelVms" OnValidSubmit="@HandleValidRequest" OnInvalidSubmit="@HandleFailedRequest"> 
+        <div class="form-group">
+            <label class="col-md-3">Name</label>
+            <InputText class="col-md-8 form-control" @bind-Value="@modelVms.ItemName"></InputText>
+        </div>
+        <br />
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning">Save</button>
+            <a @onclick="@GoToItems" class="btn btn-primary">Back</a>
+            @if(string.IsNullOrEmpty(Id))
+            {
+                <a @onclick="@DeleteItem" class="btn btn-danger">Delete</a>
+            }
+
+        </div>
+        <br />
+        <p style="color: red" >@Message</p>
+    </EditForm>
+</div>
+
+@code {
+
+
+    protected string Message = string.Empty;
+    protected ItemDTO modelVms { get; set; } = new ItemDTO();
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Inject]
+    private IDataService _dataService { get; set; }
+
+    [Inject]
+    private NavigationManager navigationManager { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        var message = "";
+
+        if(string.IsNullOrEmpty(Id))
+        {
+            // adding a new item
+        }
+        else
+        {
+            //update new item
+            var itemId = Convert.ToInt32(Id);
+            var apiResponse = await _dataService.StockItems.Get(itemId);
+
+            if (apiResponse != null)
+            {
+                if (apiResponse.StatusCode == 200)
+                {
+                    modelVms = apiResponse.Data != null ?
+                    JsonConvert.DeserializeObject<ItemDTO>(apiResponse.Data.ToString()) : null;
+                    message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+                }
+                else
+                {
+                    message = $"Title: {apiResponse.Title}<br/>Description: {apiResponse.Description}";
+                }
+                Message = message;
+            }
+        }
+
+    }
+
+    protected void HandleFailedRequest()
+    {
+        Message = "";
+    }
+
+    protected async void HandleValidRequest()
+    {
+        string message = "";
+
+        if (string.IsNullOrEmpty(Id))
+        {
+            var apiResponse = await _dataService.StockItems.Create(modelVms);
+            if (apiResponse != null)
+            {
+                if (apiResponse.StatusCode == 200)
+                {
+                    navigationManager.NavigateTo("/items");
+                }
+                else
+                {
+                    message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+                }
+            }
+            else
+            {
+                message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+            }
+            Message = message;
+        }
+        else
+        {
+            int itemId = Convert.ToInt32(Id);
+            var apiResponse = await _dataService.StockItems.Update(itemId, modelVms);
+            if (apiResponse != null)
+            {
+                if (apiResponse.StatusCode == 200)
+                {
+                    navigationManager.NavigateTo("/items");
+                }
+                else
+                {
+                    message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+                }
+            }
+            else
+            {
+                message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+            }
+            Message = message;
+        }
+    }
+
+    protected async Task DeleteItem()
+    {
+        var message = "";
+
+        if(!string.IsNullOrEmpty(Id))
+        {
+            var itemId = Convert.ToInt32(Id);
+            var apiResponse = await _dataService.StockItems.Delete(itemId);
+
+            if (apiResponse != null)
+            {
+                if (apiResponse.StatusCode == 200)
+                {
+                    navigationManager.NavigateTo("/items");
+                }
+                else
+                {
+                    message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+                }
+            }
+            else
+            {
+                message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+            }
+            Message = message;
+        }        
+    }
+
+    protected void GoToItems()
+    {
+        navigationManager.NavigateTo("/items");
+    }
+}

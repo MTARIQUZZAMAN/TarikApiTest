@@ -44,8 +44,6 @@ var mapperConfig = new MapperConfiguration(o => o.AddProfile(new AutoMapperProfi
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -57,7 +55,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors();
-
 
 //error handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
