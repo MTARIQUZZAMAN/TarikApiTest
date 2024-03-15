@@ -1,15 +1,10 @@
 ﻿using BlazorApp1.DTOs;
-using BlazorApp1.Helpers;
+using BlazorApp1.ServiceInterfaces.Internal;
 
 namespace BlazorApp1.ServiceInterfaces
 {
-    public interface IItemService
+    public interface IItemService : IGenericService<ItemDTO>
     {
-        Task<ApiResponse> Get();
-        Task<ApiResponse> Get(int Id);
 
-        Task<ApiResponse> Create(ItemDTO modelDto);
-        Task<ApiResponse> Update(int id, ItemDTO modelDto);
-        Task<ApiResponse> Delete(int id);
     }
 }

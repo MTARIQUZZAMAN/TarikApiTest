@@ -1,14 +1,10 @@
 ﻿using BlazorApp1.DTOs;
-using BlazorApp1.Helpers;
+using BlazorApp1.ServiceInterfaces.Internal;
 
 namespace BlazorApp1.ServiceInterfaces
 {
-    public interface ICategoryService
+    public interface ICategoryService : IGenericService<CategoryDTO>
     {
-        Task<ApiResponse> Get();
-        Task<ApiResponse> Get(int Id);
-        Task<ApiResponse> Create(CategoryDTO modelDto);
-        Task<ApiResponse> Update(int id, CategoryDTO modelDto);
-        Task<ApiResponse> Delete(int id);
+
     }
 }
