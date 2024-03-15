@@ -1,11 +1,11 @@
-﻿@page "/items"
+﻿@page "/categories"
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
 
-<h3>Welcome to the Items section</h3>
+<h3>Welcome to the Category section</h3>
 
-<a href="@($"itemdetails")" class="btn btn-success">New Item</a>
+<a href="@($"categorydetails")" class="btn btn-success">New Item</a>
 
 <br />
 
@@ -23,7 +23,7 @@
             <tr>
                 <td> @item.Id</td>
                 <td> @item.ItemName</td>
-                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-success">Edit</a></td>
+                <td><a href="@($"categorydetails/{item.Id}")" class="btn btn-success">Edit</a></td>
             </tr>
         }
     </tbody>
@@ -35,7 +35,7 @@
     [Inject]
     private IDataService _dataService { get; set; }
 
-    private IEnumerable<ItemDTO> modelVms { get; set; } = new List<ItemDTO>();
+    private IEnumerable<CategoryDTO> modelVms { get; set; } = new List<CategoryDTO>();
 
 
     protected async override Task OnInitializedAsync()
@@ -45,14 +45,14 @@
 
         try
         {
-            var apiResponse = await _dataService.StockItems.Get();
+            var apiResponse = await _dataService.CategoryItems.Get();
 
             if (apiResponse != null)
             {
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<List<ItemDTO>>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<List<CategoryDTO>>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                      // _toastr.AddSuccessToastMessage(message);
                 }

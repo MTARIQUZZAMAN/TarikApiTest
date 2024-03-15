@@ -1,6 +1,6 @@
 ﻿using BlazorApp1.Helpers;
 
-namespace BlazorApp1.ServiceInterfaces
+namespace BlazorApp1.ServiceInterfaces.Internal
 {
     public interface IHttpClientService : IDisposable
     {

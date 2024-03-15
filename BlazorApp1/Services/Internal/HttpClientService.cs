@@ -1,9 +1,8 @@
 ﻿using BlazorApp1.Helpers;
-using BlazorApp1.ServiceInterfaces;
-using System.Net.Http;
+using BlazorApp1.ServiceInterfaces.Internal;
 using System.Net.Http.Json;
 
-namespace BlazorApp1.Services
+namespace BlazorApp1.Services.Internal
 {
     public class HttpClientService : IHttpClientService
     {
@@ -23,12 +22,12 @@ namespace BlazorApp1.Services
         public async Task<ApiResponse> Get(string path, bool addAuthHeader)
         {
 
-                if (addAuthHeader == false)
-                    return await GetResponse(path);
+            if (addAuthHeader == false)
+                return await GetResponse(path);
 
 
-                bool authHeaderAdded = await AddAuthHeader();
-                return addAuthHeader == true ? await GetResponse(path) : ApiResponseBuilder.GenerateUnauthorized("Unauthorised", "Login");
+            bool authHeaderAdded = await AddAuthHeader();
+            return addAuthHeader == true ? await GetResponse(path) : ApiResponseBuilder.GenerateUnauthorized("Unauthorised", "Login");
 
 
         }
@@ -49,8 +48,8 @@ namespace BlazorApp1.Services
             try
             {
                 if (addAuthHeader == false)
-                return await PostResponse(path, model);
-            
+                    return await PostResponse(path, model);
+
                 bool authHeaderAdded = await AddAuthHeader();
                 return addAuthHeader == true ? await PostResponse(path, model) : ApiResponseBuilder.GenerateUnauthorized("Unauthorised", "Login");
 
@@ -60,7 +59,7 @@ namespace BlazorApp1.Services
                 Console.WriteLine(ex.Message.ToString());
                 throw ex;
             }
-       
+
         }
 
         public async Task<ApiResponse> Put(string path, bool addAuthHeader, int id, object model)

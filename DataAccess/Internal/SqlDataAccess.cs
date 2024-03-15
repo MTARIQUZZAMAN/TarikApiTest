@@ -20,7 +20,7 @@ namespace DataAccess.Internal
             CommandType commandtype,
             string connectionId = "Default")
         {
-           
+
 
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
             return await connection.QueryAsync<T>(sql, parameters, commandType: commandtype);

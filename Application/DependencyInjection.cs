@@ -9,6 +9,9 @@ namespace Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddSingleton<IItemService, ItemService>();
+            services.AddSingleton<ICategoryService, CategoryService>();
+
+
             return services;
         }
     }

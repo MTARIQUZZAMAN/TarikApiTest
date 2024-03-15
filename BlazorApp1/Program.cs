@@ -1,6 +1,6 @@
 using BlazorApp1;
-using BlazorApp1.ServiceInterfaces;
-using BlazorApp1.Services;
+using BlazorApp1.ServiceInterfaces.Internal;
+using BlazorApp1.Services.Internal;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

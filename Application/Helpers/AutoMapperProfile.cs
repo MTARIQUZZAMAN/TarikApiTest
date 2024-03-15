@@ -10,6 +10,10 @@ namespace Application.Helpers
         {
             CreateMap<ItemModel, ItemDTO>();
             CreateMap<ItemDTO, ItemModel>();
+
+
+            CreateMap<CategoryModel, CategoryDTO>();
+            CreateMap<CategoryDTO, CategoryModel>();
         }
     }
 }

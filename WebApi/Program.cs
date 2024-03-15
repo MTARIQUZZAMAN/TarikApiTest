@@ -59,13 +59,19 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAllHeaders");
 
-//error handling
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-
-//Use Serilog
-app.UseSerilogRequestLogging();
-
+if (!app.Environment.IsDevelopment())
+{
+    //error handling
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+    //Use Serilog
+    app.UseSerilogRequestLogging();
+    app.UseStatusCodePagesWithReExecute("/Errors/Exception/{0}");
+}
+else
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseAuthorization();
 

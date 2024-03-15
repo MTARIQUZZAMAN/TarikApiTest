@@ -1,17 +1,17 @@
-﻿@page "/itemdetails"
-@page "/itemdetails/{id}"
+﻿@page "/categorydetails"
+@page "/categorydetails/{id}"
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
 
 @if(string.IsNullOrEmpty(Id))
 {
-    <h1>Add New Item</h1>
+    <h1>Add New Category</h1>
 }
 else
 {
 
-    <h1>Update Item</h1>
+    <h1>Update Category</h1>
 
 }
 
@@ -40,7 +40,7 @@ else
 
 
     protected string Message = string.Empty;
-    protected ItemDTO modelVms { get; set; } = new ItemDTO();
+    protected CategoryDTO modelVms { get; set; } = new CategoryDTO();
 
     [Parameter]
     public string Id { get; set; }
@@ -64,14 +64,14 @@ else
         {
             //update new item
             var itemId = Convert.ToInt32(Id);
-            var apiResponse = await _dataService.StockItems.Get(itemId);
+            var apiResponse = await _dataService.CategoryItems.Get(itemId);
 
             if (apiResponse != null)
             {
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<ItemDTO>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<CategoryDTO>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                 }
                 else
@@ -95,12 +95,12 @@ else
 
         if (string.IsNullOrEmpty(Id))
         {
-            var apiResponse = await _dataService.StockItems.Create(modelVms);
+            var apiResponse = await _dataService.CategoryItems.Create(modelVms);
             if (apiResponse != null)
             {
                 if (apiResponse.StatusCode == 200)
                 {
-                    navigationManager.NavigateTo("/items");
+                    navigationManager.NavigateTo("/categories");
                 }
                 else
                 {
@@ -116,12 +116,12 @@ else
         else
         {
             int itemId = Convert.ToInt32(Id);
-            var apiResponse = await _dataService.StockItems.Update(itemId, modelVms);
+            var apiResponse = await _dataService.CategoryItems.Update(itemId, modelVms);
             if (apiResponse != null)
             {
                 if (apiResponse.StatusCode == 200)
                 {
-                    navigationManager.NavigateTo("/items");
+                    navigationManager.NavigateTo("/categories");
                 }
                 else
                 {
@@ -143,13 +143,13 @@ else
         if(!string.IsNullOrEmpty(Id))
         {
             var itemId = Convert.ToInt32(Id);
-            var apiResponse = await _dataService.StockItems.Delete(itemId);
+            var apiResponse = await _dataService.CategoryItems.Delete(itemId);
 
             if (apiResponse != null)
             {
                 if (apiResponse.StatusCode == 200)
                 {
-                    navigationManager.NavigateTo("/items");
+                    navigationManager.NavigateTo("/categories");
                 }
                 else
                 {
@@ -166,6 +166,6 @@ else
 
     protected void GoToItems()
     {
-        navigationManager.NavigateTo("/items");
+        navigationManager.NavigateTo("/categories");
     }
 }
