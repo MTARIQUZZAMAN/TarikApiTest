@@ -1,0 +1,3 @@
+﻿dapper
+system.data.sqlclient
+microsoft.extensions.configuration.abstractions

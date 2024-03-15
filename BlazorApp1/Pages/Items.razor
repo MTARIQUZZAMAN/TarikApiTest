@@ -1,0 +1,70 @@
+﻿@page "/items"
+@using BlazorApp1.ServiceInterfaces
+@using BlazorApp1.DTOs
+@using Newtonsoft.Json
+
+<PageTitle>Items</PageTitle>
+
+<h3>Welcome to the Items section</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in modelVms)
+        {
+            <tr>
+                <td> @item.Id</td>
+                <td> @item.ItemName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    [Inject]
+    private IDataService _dataService { get; set; }
+
+    public IEnumerable<ItemDTO> modelVms { get; set; } = new List<ItemDTO>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        var apiResponse = await _dataService.StockItems.Get();
+        var message = "Could not get response from API";
+
+        try
+        { 
+            if (apiResponse != null)
+            {
+                if (apiResponse.StatusCode == 200)
+                {
+                    modelVms = apiResponse.Data != null ?
+                    JsonConvert.DeserializeObject<List<ItemDTO>>(apiResponse.Data.ToString()) : null;
+                    message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
+                    // _toastr.AddSuccessToastMessage(message);
+                }
+                else
+                {
+                    message = $"Title: {apiResponse.Title}<br/>Description: {apiResponse.Description}";
+                    // _toastr.AddInfoToastMessage(message);
+                }
+            }
+            else
+            {
+                // _toastr.AddInfoToastMessage(message);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);            
+            throw ex;
+        }
+    }
+
+}
