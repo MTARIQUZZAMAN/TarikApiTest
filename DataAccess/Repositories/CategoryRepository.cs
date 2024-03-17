@@ -17,7 +17,7 @@ namespace DataAccess.Repositories
             _db = db;
         }
 
-        public async Task<List<CategoryModel>> GetItems()
+        public async Task<List<CategoryModel>> GetAll()
         {
             var result = (await _db.LoadData<STR_CATEGORY_INFO, dynamic>("select ID,NAME from STR_CATEGORY_INFO", new { }, CommandType.Text))
                     .Select(dto => new CategoryModel
@@ -30,7 +30,7 @@ namespace DataAccess.Repositories
 
         }
 
-        public async Task<CategoryModel?> GetItem(int id)
+        public async Task<CategoryModel?> GetById(int id)
         {
             var results = (await _db.LoadData<STR_CATEGORY_INFO, dynamic>("select ID,NAME from STR_CATEGORY_INFO where ID=@ID", new { ID = id }, CommandType.Text))
                     .Select(dto => new CategoryModel
@@ -44,7 +44,7 @@ namespace DataAccess.Repositories
         }
 
 
-        public async Task<int> InsertItem(CategoryModel itemModel)
+        public async Task<int> Insert(CategoryModel itemModel)
         {
             var p = new DynamicParameters();
             p.Add("P_name", itemModel.ItemName);
@@ -53,7 +53,7 @@ namespace DataAccess.Repositories
             return rowsAffected;
         }
 
-        public async Task<int> UpdateItem(CategoryModel itemModel)
+        public async Task<int> Update(CategoryModel itemModel)
         {
             var p = new DynamicParameters();
             p.Add("P_name", itemModel.ItemName);
@@ -63,7 +63,7 @@ namespace DataAccess.Repositories
             return rowsAffected;
         }
 
-        public async Task<int> DeleteItem(int id)
+        public async Task<int> Delete(int id)
         {
             var p = new DynamicParameters();
             p.Add("ID", id);

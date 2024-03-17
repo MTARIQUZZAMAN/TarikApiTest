@@ -2,12 +2,8 @@
 
 namespace Application.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IGenericRepository<CategoryModel>
     {
-        Task<List<CategoryModel>> GetItems();
-        Task<CategoryModel?> GetItem(int id);
-        Task<int> InsertItem(CategoryModel itemModel);
-        Task<int> UpdateItem(CategoryModel itemModel);
-        Task<int> DeleteItem(int id);
+
     }
 }

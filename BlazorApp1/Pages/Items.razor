@@ -1,4 +1,5 @@
 ﻿@page "/items"
+@using BlazorApp1.Entities.Request
 
 @using BlazorApp1.Helpers
 @using BlazorApp1.ServiceInterfaces.Internal
@@ -25,7 +26,10 @@
             <tr>
                 <td> @item.Id</td>
                 <td> @item.ItemName</td>
-                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-success">Edit</a></td>
+                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-warning">Edit</a></td>
+                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-danger">Delete</a></td>
+                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-success">Save</a></td>
+                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-secondary">Cancel</a></td>
             </tr>
         }
     </tbody>
@@ -37,7 +41,7 @@
     [Inject]
     private IDataService _dataService { get; set; }
 
-    private IEnumerable<ItemDTO> modelVms { get; set; } = new List<ItemDTO>();
+    private IEnumerable<ItemRequest> modelVms { get; set; } = new List<ItemRequest>();
 
 
     protected async override Task OnInitializedAsync()
@@ -58,7 +62,7 @@
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<List<ItemDTO>>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<List<ItemRequest>>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                     // _toastr.AddSuccessToastMessage(message);
                 }

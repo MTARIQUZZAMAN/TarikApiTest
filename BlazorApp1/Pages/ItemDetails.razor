@@ -1,5 +1,7 @@
 ﻿@page "/itemdetails"
 @page "/itemdetails/{id}"
+
+@using BlazorApp1.Entities.Request
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
@@ -37,7 +39,7 @@ else
 
 
     protected string Message = string.Empty;
-    protected ItemDTO modelVms { get; set; } = new ItemDTO();
+    protected ItemRequest modelVms { get; set; } = new ItemRequest();
 
     [Parameter]
     public string Id { get; set; }
@@ -71,7 +73,7 @@ else
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<ItemDTO>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<ItemRequest>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                 }
                 else
@@ -105,7 +107,7 @@ else
                 if (apiResponse.StatusCode == 200)
                 {
                     var createdDto = apiResponse.Data != null ? 
-                    JsonConvert.DeserializeObject<ItemDTO>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<ItemRequest>(apiResponse.Data.ToString()) : null;
                     //navigationManager.NavigateTo("/items");
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                     _toastr.ShowSuccess(message);
@@ -139,7 +141,7 @@ else
                 if (apiResponse.StatusCode == 200)
                 {
                     var createdDto = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<ItemDTO>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<ItemRequest>(apiResponse.Data.ToString()) : null;
                     navigationManager.NavigateTo("/items");
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                     _toastr.ShowSuccess(message);

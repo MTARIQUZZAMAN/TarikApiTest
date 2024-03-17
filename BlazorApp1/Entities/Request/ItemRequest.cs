@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTOs
+namespace BlazorApp1.Entities.Request
 {
-    public class ItemDTO
+    public class ItemRequest
     {
         public int Id { get; set; }
 
@@ -11,7 +11,6 @@ namespace Application.DTOs
         [StringLength(128, ErrorMessage = "{0} can not be more than {1} characters")]
         public string? ItemName { get; set; }
 
-
-
+        public DateTime CreatedOn { get; set; }
     }
 }

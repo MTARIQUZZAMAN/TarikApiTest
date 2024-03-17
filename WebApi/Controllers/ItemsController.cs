@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.Entities.Requests;
 using Application.Extensions;
 using Application.Helpers;
 using Application.Interfaces;
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Get()
         {
             //throw new Exception("some error");
-            var modelVms = await _dataService.GetItems();
+            var modelVms = await _dataService.GetAll();
             if (modelVms == null || modelVms.Count <= 0)
                 return NotFound(ApiResponseBuilder.GenerateNotFound("Get failed", "Record mot found"));
 
@@ -39,7 +39,7 @@ namespace WebApi.Controllers
             if (id <= 0)
                 return BadRequest(ApiResponseBuilder.GenerateBadRequest("Get Failed", "Invalid Input"));
 
-            var modelVm = await _dataService.GetItem(id);
+            var modelVm = await _dataService.GetById(id);
 
             if (modelVm == null)
                 return NotFound(ApiResponseBuilder.GenerateNotFound("Get failed", $"Record with id {id} not found"));
@@ -48,9 +48,8 @@ namespace WebApi.Controllers
 
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ItemDTO modelDto)
+        public async Task<IActionResult> Create([FromBody] ItemRequest modelDto)
         {
             if (modelDto == null)
             {
@@ -79,8 +78,10 @@ namespace WebApi.Controllers
         }
 
 
+
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ItemDTO modelDto)
+        public async Task<IActionResult> Update(int id, [FromBody] ItemRequest modelDto)
         {
             if (id <= 0 || modelDto == null || modelDto.Id <= 0)
             {
@@ -110,7 +111,8 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("id:int")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -127,7 +129,23 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{cid?}")]
-        public async Task<IActionResult> GetByCategoryId([FromRoute]int? cid)
+        public async Task<IActionResult> GetByCategoryIdAlter([FromRoute] int? cid)
+        {
+            if (cid <= 0)
+                return BadRequest(ApiResponseBuilder.GenerateBadRequest("Get Failed", "Invalid Input"));
+
+            var modelVms = await _dataService.GetByCategegoryId(cid);
+
+            if (modelVms == null)
+                return NotFound(ApiResponseBuilder.GenerateNotFound("Get failed", $"Record with id {cid} not found"));
+
+            return Ok(ApiResponseBuilder.GenerateOk(modelVms, "OK", $"{modelVms.Count()} record(s) with fetched"));
+
+        }
+
+        [HttpGet]
+        [Route("{cid:int?}")]
+        public async Task<IActionResult> GetByCategoryId(int? cid)
         {
             if (cid <= 0)
                 return BadRequest(ApiResponseBuilder.GenerateBadRequest("Get Failed", "Invalid Input"));

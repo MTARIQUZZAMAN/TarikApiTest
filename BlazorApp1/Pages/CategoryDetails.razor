@@ -1,5 +1,6 @@
 ﻿@page "/categorydetails"
 @page "/categorydetails/{id}"
+@using BlazorApp1.Entities.Request
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
@@ -40,7 +41,7 @@ else
 
 
     protected string Message = string.Empty;
-    protected CategoryDTO modelVms { get; set; } = new CategoryDTO();
+    protected CategoryRequest modelVms { get; set; } = new CategoryRequest();
 
     [Parameter]
     public string Id { get; set; }
@@ -71,7 +72,7 @@ else
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<CategoryDTO>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<CategoryRequest>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                 }
                 else

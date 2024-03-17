@@ -17,6 +17,7 @@ builder.Services.AddHttpClient("WebApiClient", httpClient =>
 
 builder.Services.AddBlazoredToast();
 
+
 // add http client service
 builder.Services.AddScoped<IHttpClientService, HttpClientService>();
 builder.Services.AddScoped<IDataService, DataService>();

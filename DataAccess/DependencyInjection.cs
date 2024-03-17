@@ -13,6 +13,7 @@ namespace DataAccess
         {
             var connectionString = config.GetConnectionString("Default");
 
+            //add database access
             services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
             services.AddSingleton<IItemRepository, ItemRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();

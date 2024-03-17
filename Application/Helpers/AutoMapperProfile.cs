@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.Entities.Requests;
 using AutoMapper;
 using Domain.Models;
 
@@ -8,12 +8,13 @@ namespace Application.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<ItemModel, ItemDTO>();
-            CreateMap<ItemDTO, ItemModel>();
 
+            CreateMap<ItemRequest, ItemModel>();
+            CreateMap<ItemModel, ItemRequest>();
 
-            CreateMap<CategoryModel, CategoryDTO>();
-            CreateMap<CategoryDTO, CategoryModel>();
+            CreateMap<CategoryRequest, CategoryModel>();
+            CreateMap<CategoryModel, CategoryRequest>();
+
         }
     }
 }

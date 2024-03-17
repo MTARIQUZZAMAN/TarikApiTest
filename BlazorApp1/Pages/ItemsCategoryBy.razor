@@ -1,5 +1,6 @@
 ﻿@page "/itemscategoryby/{cid:int?}"
 
+@using BlazorApp1.Entities.Request
 @using BlazorApp1.Helpers
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
@@ -41,7 +42,7 @@
     public int? cid { get; set; }
 
 
-    private IEnumerable<ItemDTO> modelVms { get; set; } = new List<ItemDTO>();
+    private IEnumerable<ItemRequest> modelVms { get; set; } = new List<ItemRequest>();
 
 
     protected async override Task OnInitializedAsync()
@@ -59,7 +60,7 @@
                 if (apiResponse.StatusCode == 200)
                 {
                     modelVms = apiResponse.Data != null ?
-                    JsonConvert.DeserializeObject<List<ItemDTO>>(apiResponse.Data.ToString()) : null;
+                    JsonConvert.DeserializeObject<List<ItemRequest>>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
                     // _toastr.AddSuccessToastMessage(message);
                 }

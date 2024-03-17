@@ -12,6 +12,7 @@ namespace BlazorApp1.Services.Internal
         {
             _httpClient = httpClientFactory.CreateClient("WebApiClient");
         }
+
         private Task<bool> AddAuthHeader()
         {
             throw new NotImplementedException();

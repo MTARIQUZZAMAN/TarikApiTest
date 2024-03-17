@@ -17,7 +17,7 @@ namespace DataAccess.Repositories
             _db = db;
         }
 
-        public async Task<List<ItemModel>> GetItems()
+        public async Task<List<ItemModel>> GetAll()
         {
             var result = (await _db.LoadData<STR_ITEM_INFO, dynamic>("select  STR_ITEM_ID,ITEM_NAME from STR_ITEM_INFO", new { }, CommandType.Text))
                     .Select(dto => new ItemModel
@@ -30,7 +30,7 @@ namespace DataAccess.Repositories
 
         }
 
-        public async Task<ItemModel?> GetItem(int id)
+        public async Task<ItemModel?> GetById(int id)
         {
             var results = (await _db.LoadData<STR_ITEM_INFO, dynamic>("select * from STR_ITEM_INFO where STR_ITEM_ID=@ID", new { ID = id }, CommandType.Text))
                     .Select(dto => new ItemModel
@@ -43,9 +43,9 @@ namespace DataAccess.Repositories
 
         }
 
-        public async Task<int> InsertItem(ItemModel itemModel)
+        public async Task<int> Insert(ItemModel itemModel)
         {
-       
+
             try
             {
                 var p = new DynamicParameters();
@@ -54,13 +54,13 @@ namespace DataAccess.Repositories
                     "SELECT CAST(SCOPE_IDENTITY() as int)", p, CommandType.Text);
                 return newid;
             }
-            catch 
+            catch
             {
                 return -1;
             }
         }
 
-        public async Task<int> UpdateItem(ItemModel itemModel)
+        public async Task<int> Update(ItemModel itemModel)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace DataAccess.Repositories
 
         }
 
-        public async Task<int> DeleteItem(int id)
+        public async Task<int> Delete(int id)
         {
             var p = new DynamicParameters();
             p.Add("ID", id);
@@ -89,12 +89,12 @@ namespace DataAccess.Repositories
 
         public async Task<List<ItemModel>> GetByCategoryId(int? cid)
         {
-          var result = (await _db.LoadData<STR_ITEM_INFO, dynamic>("select  STR_ITEM_ID,ITEM_NAME from STR_ITEM_INFO where CATEGORY_ID=@CID", new { CID = cid }, CommandType.Text))
-          .Select(dto => new ItemModel
-          {
-              Id = dto.STR_ITEM_ID,
-              ItemName = dto.ITEM_NAME,
-          }).ToList();
+            var result = (await _db.LoadData<STR_ITEM_INFO, dynamic>("select  STR_ITEM_ID,ITEM_NAME from STR_ITEM_INFO where CATEGORY_ID=@CID", new { CID = cid }, CommandType.Text))
+            .Select(dto => new ItemModel
+            {
+                Id = dto.STR_ITEM_ID,
+                ItemName = dto.ITEM_NAME,
+            }).ToList();
 
             return result;
         }

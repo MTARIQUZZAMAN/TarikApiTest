@@ -1,6 +1,4 @@
 using Application;
-using Application.Helpers;
-using AutoMapper;
 using DataAccess;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -41,11 +39,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddApplication();
 builder.Services.AddInfractructure(builder.Configuration);
 
-
-//add automapper
-var mapperConfig = new MapperConfiguration(o => o.AddProfile(new AutoMapperProfile()));
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

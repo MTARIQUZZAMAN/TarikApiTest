@@ -1,15 +1,10 @@
-﻿using Application.DTOs;
+﻿using Application.Entities.Requests;
 
 namespace Application.Interfaces
 {
-    public interface IItemService
+    public interface IItemService : IGenericService<ItemRequest>
     {
+        Task<List<ItemRequest>> GetByCategegoryId(int? cid);
 
-        Task<List<ItemDTO>> GetItems();
-        Task<ItemDTO> GetItem(int id);
-        Task<ItemDTO> Create(ItemDTO dto);
-        Task<ItemDTO> Update(ItemDTO dto);
-        Task<int> Delete(int id);
-        Task<List<ItemDTO>> GetByCategegoryId(int? cid);
     }
 }
