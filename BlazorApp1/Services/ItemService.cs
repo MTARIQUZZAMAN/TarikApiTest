@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.DTOs;
+using BlazorApp1.Helpers;
 using BlazorApp1.ServiceInterfaces;
 using BlazorApp1.ServiceInterfaces.Internal;
 using BlazorApp1.Services.Internal;
@@ -14,8 +15,9 @@ namespace BlazorApp1.Services
             _httpClientService = httpClientService;
         }
 
-
-
-
+        public async Task<ApiResponse> GetItembyCategoryId(int? cid)
+        {
+            return await _httpClientService.Get($"{_controllerName}/GetByCategoryId", false, cid);
+        }
     }
 }

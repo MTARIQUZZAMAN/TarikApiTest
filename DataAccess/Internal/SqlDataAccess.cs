@@ -14,6 +14,18 @@ namespace DataAccess.Internal
             _config = config;
         }
 
+
+        public async Task<int> InsertSingle<U>(
+            string sql,
+            U parameters,
+            CommandType commandtype,
+            string connectionId = "Default")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            return await connection.QuerySingleAsync<int>(sql, parameters, commandType: commandtype);
+        }
+
+
         public async Task<IEnumerable<T>> LoadData<T, U>(
             string sql,
             U parameters,

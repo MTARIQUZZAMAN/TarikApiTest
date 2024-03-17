@@ -10,6 +10,6 @@ namespace Application.Interfaces
         Task<ItemDTO> Create(ItemDTO dto);
         Task<ItemDTO> Update(ItemDTO dto);
         Task<int> Delete(int id);
-
+        Task<List<ItemDTO>> GetByCategegoryId(int? cid);
     }
 }

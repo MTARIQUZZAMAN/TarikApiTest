@@ -1,6 +1,7 @@
 using BlazorApp1;
 using BlazorApp1.ServiceInterfaces.Internal;
 using BlazorApp1.Services.Internal;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -14,6 +15,7 @@ builder.Services.AddHttpClient("WebApiClient", httpClient =>
     httpClient.BaseAddress = new Uri("https://localhost:44321/api/");
 });
 
+builder.Services.AddBlazoredToast();
 
 // add http client service
 builder.Services.AddScoped<IHttpClientService, HttpClientService>();

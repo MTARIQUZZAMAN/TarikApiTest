@@ -1,4 +1,6 @@
 ﻿@page "/items"
+
+@using BlazorApp1.Helpers
 @using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
@@ -40,12 +42,16 @@
 
     protected async override Task OnInitializedAsync()
     {
-       
+
         var message = "Could not get response from API";
+        ApiResponse apiResponse;
 
         try
         {
-            var apiResponse = await _dataService.StockItems.Get();
+
+            apiResponse = await _dataService.StockItems.Get();
+
+
 
             if (apiResponse != null)
             {
@@ -54,7 +60,7 @@
                     modelVms = apiResponse.Data != null ?
                     JsonConvert.DeserializeObject<List<ItemDTO>>(apiResponse.Data.ToString()) : null;
                     message = $"Message: {apiResponse.Message}<br/>Description: {apiResponse.Description}";
-                     // _toastr.AddSuccessToastMessage(message);
+                    // _toastr.AddSuccessToastMessage(message);
                 }
                 else
                 {

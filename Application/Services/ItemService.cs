@@ -37,8 +37,9 @@ namespace Application.Services
         {
             if (dto == null) return default;
             var model = _mapper.Map<ItemModel>(dto);
-            var rowsAffected = await _repository.InsertItem(model);
-            if (rowsAffected <= 0) return default;
+            var newId = await _repository.InsertItem(model);
+            if (newId <= 0) return default;
+            model.Id = newId;
             var createdDto = _mapper.Map<ItemDTO>(model);
             return createdDto;
         }
@@ -58,6 +59,15 @@ namespace Application.Services
             if (id <= 0) return -1;
             var rowsDeleted = await _repository.DeleteItem(id);
             return rowsDeleted;
+        }
+
+        public async Task<List<ItemDTO>> GetByCategegoryId(int? cid)
+        {
+            if (cid <= 0) return null;
+            var models = await _repository.GetByCategoryId(cid);
+            if (models == null) return null;
+            var vms = _mapper.Map<List<ItemDTO>>(models);
+            return vms;
         }
     }
 }

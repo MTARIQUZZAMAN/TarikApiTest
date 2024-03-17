@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-
+            //throw new Exception("some error");
             var modelVms = await _dataService.GetItems();
             if (modelVms == null || modelVms.Count <= 0)
                 return NotFound(ApiResponseBuilder.GenerateNotFound("Get failed", "Record mot found"));
@@ -124,5 +124,23 @@ namespace WebApi.Controllers
             return Ok(ApiResponseBuilder.GenerateOk(rowsDeleted, "Ok", $"Record deleted at api/Items/Delete/{id}"));
 
         }
+
+
+        [HttpGet("{cid?}")]
+        public async Task<IActionResult> GetByCategoryId([FromRoute]int? cid)
+        {
+            if (cid <= 0)
+                return BadRequest(ApiResponseBuilder.GenerateBadRequest("Get Failed", "Invalid Input"));
+
+            var modelVms = await _dataService.GetByCategegoryId(cid);
+
+            if (modelVms == null)
+                return NotFound(ApiResponseBuilder.GenerateNotFound("Get failed", $"Record with id {cid} not found"));
+
+            return Ok(ApiResponseBuilder.GenerateOk(modelVms, "OK", $"{modelVms.Count()} record(s) with fetched"));
+
+        }
+
+
     }
 }
