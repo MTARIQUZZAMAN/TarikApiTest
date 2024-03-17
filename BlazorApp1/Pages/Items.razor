@@ -1,14 +1,12 @@
 ﻿@page "/items"
 @using BlazorApp1.Entities.Request
-
 @using BlazorApp1.Helpers
-@using BlazorApp1.ServiceInterfaces.Internal
 @using BlazorApp1.DTOs
 @using Newtonsoft.Json
 
 <h3>Welcome to the Items section</h3>
 
-<a href="@($"itemdetails")" class="btn btn-success">New Item</a>
+<a href="@("itemdetails")" class="btn btn-success">New Item</a>
 
 <br />
 
@@ -27,9 +25,6 @@
                 <td> @item.Id</td>
                 <td> @item.ItemName</td>
                 <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-warning">Edit</a></td>
-                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-danger">Delete</a></td>
-                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-success">Save</a></td>
-                <td><a href="@($"itemdetails/{item.Id}")" class="btn btn-sm btn-secondary">Cancel</a></td>
             </tr>
         }
     </tbody>

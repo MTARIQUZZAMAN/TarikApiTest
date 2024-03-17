@@ -23,16 +23,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("BlazorApp",
+//        builder =>
+//        {
+//            builder.AllowAnyOrigin()
+//                   .AllowAnyHeader()
+//                   .AllowAnyMethod();
+//        });
+//});
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllHeaders",
+    options.AddPolicy("BlazorApp",
         builder =>
         {
-            builder.AllowAnyOrigin()
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
+            builder.WithOrigins("https://localhost:7124")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
         });
 });
+
 
 
 //data related services
@@ -50,7 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAllHeaders");
+app.UseCors("BlazorApp");
 
 
 if (!app.Environment.IsDevelopment())

@@ -111,8 +111,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpDelete]
-        [Route("id:int")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

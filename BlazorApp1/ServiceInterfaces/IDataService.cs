@@ -1,4 +1,4 @@
-﻿namespace BlazorApp1.ServiceInterfaces.Internal
+﻿namespace BlazorApp1.ServiceInterfaces
 {
     public interface IDataService
     {
