@@ -1,4 +1,5 @@
-﻿using Application.Helpers;
+﻿using Application.Authentication;
+using Application.Helpers;
 using Application.Interfaces;
 using Application.Services;
 using AutoMapper;
@@ -20,7 +21,7 @@ namespace Application
             //add services
             services.AddSingleton<IItemService, ItemService>();
             services.AddSingleton<ICategoryService, CategoryService>();
-
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
