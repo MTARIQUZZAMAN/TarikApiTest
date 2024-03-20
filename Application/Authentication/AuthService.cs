@@ -2,6 +2,8 @@
 using Application.DTOs;
 using Application.Entities;
 using Application.Interfaces;
+using Application.Repositories;
+using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,12 +18,15 @@ namespace Application.Authentication
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly IRefreshTokensRepository _reposRefreshToken;
 
-
-        public AuthService(UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings)
+        public AuthService(UserManager<ApplicationUser> userManager, 
+            IOptions<JwtSettings> jwtSettings,
+            IRefreshTokensRepository reposRefreshToken)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+            _reposRefreshToken = reposRefreshToken;
         }
 
 
@@ -73,14 +78,76 @@ namespace Application.Authentication
             //generat ejwt token
             var jwtToken = GenerateAccessToken(claimsIdentity);
 
+            var refreshToken = await this.GenerateRefreshtoken(newUser.Id);
+
             //set these into jwttoken
             jwtTokenVM.JwtToken = jwtToken;
-            jwtTokenVM.RefreshToekn = string.Empty;
+            jwtTokenVM.RefreshToekn = refreshToken;
             jwtTokenVM.Error = string.Empty;
 
             return jwtTokenVM;
         }
 
+        public async Task<JwtToeknVM> Login(LoginDTO loginDTO)
+        {
+            var jwtTokenVM = new JwtToeknVM();
+            if (loginDTO == null)
+            {
+                jwtTokenVM.Error = "Invalid Input";
+                return jwtTokenVM;
+            }
+
+            if (string.IsNullOrEmpty(loginDTO.UserName))
+            {
+                jwtTokenVM.Error = "User Name is required";
+                return jwtTokenVM;
+            }
+
+            if (string.IsNullOrEmpty(loginDTO.Password))
+            {
+                jwtTokenVM.Error = "Password Name is required";
+                return jwtTokenVM;
+            }
+
+
+            var existingUser = await _userManager.FindByNameAsync(loginDTO.UserName);
+
+            if (existingUser == null)
+            {
+                jwtTokenVM.Error = "User not Found";
+                return jwtTokenVM;
+            }
+
+            var lockedOut = await _userManager.IsLockedOutAsync(existingUser);
+            if(lockedOut)
+            {
+                jwtTokenVM.Error = "Allount Locked out";
+                return jwtTokenVM;
+            }
+            var passwordInvalid = await _userManager.CheckPasswordAsync(existingUser, loginDTO.Password);
+            if (passwordInvalid)
+            {
+                await _userManager.AccessFailedAsync(existingUser);
+                jwtTokenVM.Error = "Invalid Password";
+                return jwtTokenVM;
+            }
+
+
+            //generate claims
+            var claimsIdentity = GenerateClaimsIdentity(existingUser);
+
+            //generat ejwt token
+            var jwtToken = GenerateAccessToken(claimsIdentity);
+
+            var refreshToken = await this.GenerateRefreshtoken(existingUser.Id);
+
+            //set these into jwttoken
+            jwtTokenVM.JwtToken = jwtToken;
+            jwtTokenVM.RefreshToekn = refreshToken;
+            jwtTokenVM.Error = string.Empty;
+
+            return jwtTokenVM;
+        }
 
         private static ClaimsIdentity GenerateClaimsIdentity(ApplicationUser newUser)
         {
@@ -112,11 +179,27 @@ namespace Application.Authentication
                 DateTime.UtcNow,
                 DateTime.UtcNow.Add(TimeSpan.FromMinutes(_jwtSettings.AccessTokenExpirationMinutes)),
                 new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SingningKey)),
-                SecurityAlgorithms.HmacSha512));
+                SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
+        public async Task<string> GenerateRefreshtoken(string userId)
+        {
+            var existingRefreshToken = await _reposRefreshToken.GetRefreshTokenByUserId(userId);
 
+            if (existingRefreshToken != null)
+                _reposRefreshToken.Delete(existingRefreshToken.Id);
 
+            var newRefreshToken = new RefreshTokensModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = userId,
+                IssuedUtc = DateTime.UtcNow,
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_jwtSettings.RefreshTokenExpirationMinutes))
+            };
+
+            await _reposRefreshToken.Create(newRefreshToken);
+            return newRefreshToken.Id;
+        }
     }
 }

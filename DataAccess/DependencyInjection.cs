@@ -17,6 +17,7 @@ namespace DataAccess
             services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
             services.AddSingleton<IItemRepository, ItemRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddSingleton<IRefreshTokensRepository, RefreshTokensRepository>();
 
             return services;
         }

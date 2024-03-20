@@ -1,4 +1,4 @@
-﻿namespace Application.DTOs
+﻿namespace Domain.Models
 {
     public class RegisterDTO
     {

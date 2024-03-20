@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Domain.Models;
 using Application.Entities;
 
 namespace Application.Interfaces
@@ -6,5 +6,6 @@ namespace Application.Interfaces
     public interface IAuthService
     {
         Task<JwtToeknVM> Register(RegisterDTO registerDTO);
+        Task<JwtToeknVM> Login(LoginDTO loginDTO);
     }
 }
