@@ -34,7 +34,11 @@ namespace WebApi.Controllers
                 if (errors != null && errors.Count > 0)
                 {
                     var msgBuilder = new StringBuilder();
-                    return BadRequest(ApiResponseBuilder.GenerateBadRequest("Regis failed", "register"));
+                    foreach (var error in errors)
+                    {
+                        msgBuilder.AppendLine(error.ToString());
+                    }
+                    return BadRequest(ApiResponseBuilder.GenerateBadRequest("Regis failed", msgBuilder.ToString()));
                 }
             }
 
@@ -42,7 +46,7 @@ namespace WebApi.Controllers
             var jwtToken = await _authService.Register(registerDTO);
             if (jwtToken == null || string.IsNullOrEmpty(jwtToken.JwtToken))
             {
-                return BadRequest(ApiResponseBuilder.GenerateBadRequest("Regis failed", "register"));
+                return BadRequest(ApiResponseBuilder.GenerateBadRequest("Regis failed", jwtToken.Error));
             }
 
             return Ok(ApiResponseBuilder.GenerateOk(jwtToken, "OK", "success"));
